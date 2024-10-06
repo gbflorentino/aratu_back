@@ -29,13 +29,13 @@ async def create_user(user: schemas.users.UserCreate, db: Session = Depends(get_
 
 @app.get("/users/{user_id}", response_model=schemas.users.User, tags=["user"])
 async def read_user(user_id: int, db: Session = Depends(get_db)):
-  db_user = services.get_user(db, user_id=user_id)
+  db_user = services.users.get_user(db, user_id=user_id)
   if db_user is None:
     raise HTTPException(status_code=404, detail="Usuario não encontrado")
   
 @app.get("/users/", response_model=list[schemas.users.User], tags=["user"])
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-  users = services.get_users(db, skip=skip, limit=limit)
+  users = services.users.get_users(db, skip=skip, limit=limit)
   print(users)
   return users
 
