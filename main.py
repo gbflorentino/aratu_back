@@ -42,9 +42,10 @@ async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_
 @app.post("/posts/", response_model=schemas.posts.Post, tags=["posts"])
 async def create_post_for_user(
   post: schemas.posts.PostCreate,
-  current_user: schemas.users.User = Depends(get_current_user),
+  current_user_id: int = Depends(get_current_user),
   db: Session = Depends(get_db)  
 ):
+  post.user_id = current_user_id
   return services.posts.create_post(db=db, post=post)
 
 @app.get("/posts/", response_model=list[schemas.posts.Post], tags=["posts"])
@@ -56,10 +57,11 @@ async def read_posts(skip: int = 0, limit: int = 100, db: Session = Depends(get_
 async def creatte_comment_for_post(
   post_id: int,
   comment: schemas.comments.CommentCreate,
-  current_user: schemas.users.User = Depends(get_current_user),
+  current_user_id: int = Depends(get_current_user),
   db: Session = Depends(get_db)  
 ):
   comment.post_id = post_id
+  comment.user_id = current_user_id
   return services.comments.create_comment(db=db, comment=comment)
 
 @app.get("/posts/{post_id}/comments", response_model=list[schemas.comments.Comment], tags=["comments"])

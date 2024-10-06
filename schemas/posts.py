@@ -7,11 +7,10 @@ class PostBase(BaseModel):
   alert_type: int
 
 class PostCreate(PostBase):
-  user_id: int
+  user_id: int | None = None
 
 class Post(PostBase):
   id: int
-  user_id: int
 
   class Config:
     orm_mode = True

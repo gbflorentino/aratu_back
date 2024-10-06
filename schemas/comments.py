@@ -5,7 +5,7 @@ class CommentBase(BaseModel):
 
 class CommentCreate(CommentBase):
   post_id: int
-  user_id: int
+  user_id: int | None  = None
 
 class Comment(CommentBase):
   id: int
