@@ -24,7 +24,6 @@ async def create_user(user: schemas.users.UserCreate, db: Session = Depends(get_
   if db_user:
     raise HTTPException(status_code=400, detail="O usuário já está registrado")
   user.password = get_password_hash(password=user.password)
-  print(user.password)
   return services.users.create_user(db=db, user=user)
 
 @app.get("/users/{user_id}", response_model=schemas.users.User, tags=["user"])
@@ -32,11 +31,11 @@ async def read_user(user_id: int, db: Session = Depends(get_db)):
   db_user = services.users.get_user(db, user_id=user_id)
   if db_user is None:
     raise HTTPException(status_code=404, detail="Usuario não encontrado")
+  return db_user
   
 @app.get("/users/", response_model=list[schemas.users.User], tags=["user"])
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
   users = services.users.get_users(db, skip=skip, limit=limit)
-  print(users)
   return users
 
 @app.post("/posts/", response_model=schemas.posts.Post, tags=["posts"])
