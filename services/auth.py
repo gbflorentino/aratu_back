@@ -55,9 +55,10 @@ def generate_token(db: Session, username, password):
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
-    return create_access_token(
+    access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
+    return access_token, user.id
 
 async def get_current_user(
   token: Annotated[str, Depends(oauth2_scheme)],

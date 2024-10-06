@@ -72,9 +72,9 @@ async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     db: Session = Depends(get_db)
 ) -> Token:
-    access_token = generate_token(
+    access_token, user_id = generate_token(
       db=db,
       username=form_data.username,
       password=form_data.password
     )
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(user_id=user_id, access_token=access_token, token_type="bearer")

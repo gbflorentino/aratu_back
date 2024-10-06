@@ -12,9 +12,8 @@ def get_comments_post(db: Session, post_id: int, limit=10):
 def create_comment(db: Session, comment: schemas.CommentCreate):
   new_comment: models.comments.Comment = models.comments.Comment(
     content=comment.content,
-    localization=comment.localization,
-    alert_type=comment.alert_type,
-    user_id=comment.user_id
+    user_id=comment.user_id,
+    post_id=comment.post_id
   )
   db.add(new_comment)
   db.commit()
